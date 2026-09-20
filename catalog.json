@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "version": "0.1.2",
+  "profiles": {
+    "common": { "rules": ["common", "workflow"], "skills": ["kit-task", "kit-review", "kit-api-contract"] },
+    "frontend": { "rules": ["frontend"], "skills": ["kit-ui-review"] },
+    "angular": { "rules": ["angular"], "skills": [] },
+    "vue": { "rules": ["vue"], "skills": [] },
+    "react": { "rules": ["react"], "skills": [] },
+    "backend": { "rules": ["backend"], "skills": ["kit-data-change"] },
+    "microfrontend": { "rules": ["microfrontend"], "skills": [] },
+    "admin": { "rules": ["admin"], "skills": ["kit-crud", "kit-import-diagnose"] }
+  }
+}

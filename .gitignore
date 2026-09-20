@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+.agent-kit/reports/
+coverage/
+.env
+.env.*
+!.env.example
