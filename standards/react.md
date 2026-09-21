@@ -2,6 +2,8 @@
 
 适用 React 路径。核对 React 版本、路由/构建框架；不把 SPA 建议强加给已有 SSR/RSC 工程。
 
+新建客户端 SPA 按 [工具链标准](tooling.md) 使用 pnpm、Vite 和 TypeScript；SSR/RSC 使用所选框架官方构建链。存量工程保留原有工具。
+
 - HTTP：集中 API client + feature data-access hooks，组件不复制鉴权。服务端数据可用项目已选 Query 层；缓存键包含身份/租户/语言/筛选，mutation 后明确失效。
 - 路由：沿用现有 React Router 或应用框架路由；布局、资源加载、错误边界与权限有明确归属，不混建第二套路由。
 - 状态：useState/useReducer 管局部；Context 传低频共享上下文，不承载所有高频服务器状态。是否增加 Zustand/Redux 等由真实需求决定。

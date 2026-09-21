@@ -20,8 +20,8 @@ function lstatIfPresent(file) {
   catch (error) { if (error.code === 'ENOENT') return null; throw error; }
 }
 
-// Reject symlinks on every component, including target ancestors. Never follow
-// a user-supplied lock/config path outside the selected project.
+// 拒绝路径每一层的符号链接，包括目标目录的祖先目录。
+// 用户提供的 lock/config 路径不得引导访问所选项目之外的位置。
 export function safePath(root, relative = '.') {
   if (typeof relative !== 'string' || !relative || path.isAbsolute(relative) || relative.includes('\\') || relative.split('/').includes('..')) {
     fail(`Unsafe relative path: ${relative}`);
@@ -88,8 +88,8 @@ function release(source) {
 }
 
 function managedBlock(text, required = false) {
-  // Read historical namespaced markers for upgrades; write only neutral markers.
-  // Ownership is still verified against the installed lock's block hash.
+  // 升级时兼容读取历史命名空间标记，新写入只使用中性标记。
+  // 仍通过已安装 lock 中的区块摘要验证归属。
   const markers = [...text.matchAll(/<!-- ((?:[a-z0-9]+-)*agent-kit):(start|end) -->/g)];
   if (!markers.length && !required) return null;
   if (markers.length !== 2 || markers[0][2] !== 'start' || markers[1][2] !== 'end' || markers[0][1] !== markers[1][1]) fail('AGENTS managed markers missing or malformed');
@@ -98,7 +98,7 @@ function managedBlock(text, required = false) {
 
 function block(profiles, catalog) {
   const mappings = profiles.map((name) => `- ${name}: ${catalog.profiles[name].rules.map((r) => `\`.agent-kit/rules/${r}.md\``).join(', ')}`).join('\n');
-  return `${START}\n## Agent Kit\n\n任务开始先完整读取 \`.agent-kit/project.json\` 和其 documents，按 scopes 与实际修改目录选择规则。始终读取 common/workflow；匹配框架、admin 或 microfrontend 时同时读取 frontend。不要给 Angular 任务加载 Vue 实现标准。遇到范围不明、override 或规则冲突时解释并确认，不假设本区块覆盖其他有效指令。\n\n${mappings}\n\n项目根目录 \`.agents/skills/kit-*/SKILL.md\` 是按任务选择的 Skills，匹配时完整读取；未读取不得声称已使用。变更前定义验收样例，完成后交付实际检查和浏览器证据。配置未完成不能假装门禁已通过。\n\n离线检查入口：\`node .agent-kit/tools/bin/agent-kit.mjs doctor --target .\`；\`verify --target .\` 仅预览，审核命令后加 \`--execute\` 才执行。\n${END}`;
+  return `${START}\n## Agent Kit\n\n任务开始先完整读取 \`.agent-kit/project.json\` 和其 documents，按 scopes 与实际修改目录选择规则。始终读取 common/workflow/tooling；匹配框架、admin 或 microfrontend 时同时读取 frontend。不要给 Angular 任务加载 Vue 实现标准。遇到范围不明、override 或规则冲突时解释并确认，不假设本区块覆盖其他有效指令。\n\n${mappings}\n\n项目根目录 \`.agents/skills/kit-*/SKILL.md\` 是按任务选择的 Skills，匹配时完整读取；未读取不得声称已使用。变更前定义验收样例，完成后交付实际检查和浏览器证据。配置未完成不能假装门禁已通过。\n\n离线检查入口：\`node .agent-kit/tools/bin/agent-kit.mjs doctor --target .\`；\`verify --target .\` 仅预览，审核命令后加 \`--execute\` 才执行。\n${END}`;
 }
 
 function ownedPath(rel) {
@@ -168,7 +168,7 @@ export function install(target, requested = [], { apply = false, source = SOURCE
   const nextBlock = block(profiles, catalog);
   const nextAgents = previousBlock ? agents.replace(previousBlock, nextBlock) : `${agents}${agents && !agents.endsWith('\n') ? '\n' : ''}${agents ? '\n' : ''}${nextBlock}\n`;
   const lock = { schemaVersion: 1, version: catalog.version, bundleDigest, profiles, profileRules, files: Object.fromEntries(Object.entries(files).map(([rel, text]) => [rel, hash(text)])), agentsBlockHash: hash(nextBlock) };
-  // Build the entire plan before writing even a directory.
+  // 写入前先构建完整计划，连目录也不能提前创建。
   const writes = [];
   const add = (rel, content, owned = false) => {
     const full = safePath(root, rel);
@@ -184,7 +184,7 @@ export function install(target, requested = [], { apply = false, source = SOURCE
   add(LOCK, json(lock), Boolean(old));
   if (!exists(root, CONFIG)) add(CONFIG, json({ schemaVersion: 1, configured: false, scopes: [{ path: '.', profiles }], documents: ['.agent-kit/project.md'], checks: [] }));
   if (!exists(root, '.agent-kit/project.md')) add('.agent-kit/project.md', read(source, 'templates/project.md'));
-  // Validate backup/report directories even if they do not yet exist.
+  // 即使备份目录尚不存在，也先验证其路径是否安全。
   safePath(root, '.agent-kit/backups');
   const result = { target: root, version: catalog.version, profiles, applied: apply, files: writes.map((w) => w.path) };
   if (!apply || !writes.length) return result;

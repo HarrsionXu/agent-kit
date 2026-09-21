@@ -4,7 +4,7 @@ import path from 'node:path';
 const START = '<!-- repository-structure:start -->';
 const END = '<!-- repository-structure:end -->';
 
-// Match this repository's generated/private exclusions, not arbitrary gitignore rules.
+// 仅匹配本仓库约定的生成文件和私有文件排除项，不解析任意 gitignore 规则。
 function ignored(name) {
   return ['.git', 'node_modules', '.agent-kit', 'coverage', '.DS_Store'].includes(name)
     || (name !== '.env.example' && (name === '.env' || name.startsWith('.env.')));

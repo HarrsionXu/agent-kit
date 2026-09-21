@@ -23,7 +23,9 @@
 }
 ```
 
-这只是格式示例，不能假设业务项目一定有 typecheck 脚本。实际命令应来自该仓库 package.json 和工具链。`scopes` 用于按目录选择规则；多框架仓库应分别写 `apps/web-angular`、`apps/legacy-vue`，不要在同一 scope 选三种框架。目录存在性、同一路径/重叠目录的框架冲突会被检查。common/workflow 始终适用，框架/admin/microfrontend scope 同时适用 frontend。
+这只是格式示例，不能假设业务项目一定有 typecheck 脚本。实际命令应来自该仓库 package.json 和工具链。`scopes` 用于按目录选择规则；多框架仓库应分别写 `apps/web-angular`、`apps/legacy-vue`，不要在同一 scope 选三种框架。目录存在性、同一路径/重叠目录的框架冲突会被检查。common/workflow/tooling 始终适用，框架/admin/microfrontend scope 同时适用 frontend。
+
+0.1.5 起 common 配置集还包含 tooling，始终读取以区分新工程默认值与存量边界。工具链事实和例外记录在 project.md；安装器不生成或改写业务 package.json、包管理器锁文件、构建配置或 CI。升级保留已有 project.md，新增模板字段需在获授权的项目维护中补充。
 
 `documents` 为必读项目事实/设计约束/决策文档路径。配置不写 token、服务器密码、个人数据。规则不会自动读环境变量或历史会话。
 

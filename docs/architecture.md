@@ -16,7 +16,7 @@
 
 ## 目录与职责
 
-- `standards/`：公共规范和 profile；Angular/Vue/React 各自定义 HTTP、路由、状态与验证要求。
+- `standards/`：公共规范和 profile；tooling 定义新工程工具链默认值与存量兼容边界，Angular/Vue/React 各自定义 HTTP、路由、状态与验证要求。
 - `.agents/skills/`：独立、按需读取的任务方法；安装时仅复制选中的技能。
 - `src/kit.mjs`：分发及验证逻辑，`bin/agent-kit.mjs` 是薄入口。
 - `templates/`：项目事实、验收/交付记录。

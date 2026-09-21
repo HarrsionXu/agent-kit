@@ -2,6 +2,8 @@
 
 适用 Angular 路径，非迁移指令。先核对 Angular 主版本、CLI/Nx target、现有状态库和浏览器基线。
 
+新工程按 [工具链标准](tooling.md) 使用 pnpm 和 Angular CLI 官方 application builder；存量工程及其新增应用沿用现有配置，不为统一 Vite 更换构建链。
+
 - HTTP：复用 HttpClient、项目 interceptor 与 data-access service。将 DTO/业务映射和 token 策略与组件分离；公共/no-auth、401、refresh 并发依契约处理。
 - 路由：Angular Router 按业务域 lazy route；项目/资源 ID 来自路由上下文，不散落全局变量。验证深链刷新、返回、guard 与子路由匹配。
 - 状态：局部 UI 使用项目支持的 Signals；异步取消、并发与流组合采用 RxJS。既有 NGXS/NgRx 不因本规则被替换；跨组件共享的所有权、缓存失效必须明确。

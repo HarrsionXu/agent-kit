@@ -26,7 +26,8 @@ agent-kit/
 ├── standards/                        “应该遵守什么”：可复用的规范正文
 │   ├── common.md                     所有项目的公共原则、任务边界、数据正确性、交付证据
 │   ├── workflow.md                   角色职责、风险分级、连续执行与暂停条件、任务记录和证据交付
-│   ├── frontend.md                   跨框架 UI、交互、可访问性、设计基线和接口分层
+│   ├── tooling.md                    新工程工具链默认选型、版本锁定、CI、构建验收与存量兼容边界
+│   ├── frontend.md                   前端设计、Tailwind、状态分层、类型模型、硬编码限制及维护审查
 │   ├── angular.md                    Angular 的 HTTP、路由、状态、表单、生命周期及验证
 │   ├── vue.md                        Vue 的客户端、Router、Pinia、composable、组件及验证
 │   ├── react.md                      React 的数据 hooks、路由、状态、effect、表单及验证
@@ -41,7 +42,7 @@ agent-kit/
 │       ├── kit-review/
 │       │   └── SKILL.md              对照验收审查实现与证据，说明缺陷及未验证部分
 │       ├── kit-ui-review/
-│       │   └── SKILL.md              根据既有设计基线实现和检查 UI，验证实际交互
+│       │   └── SKILL.md              按设计基线实现 UI，审查前端代码质量并验证实际交互
 │       ├── kit-api-contract/
 │       │   └── SKILL.md              核对请求/响应、鉴权、ID 精度、状态映射和接口缺口
 │       ├── kit-data-change/
@@ -60,15 +61,15 @@ agent-kit/
 │   └── structure.mjs                 比对 structure.md 结构树与源目录，报告缺项、过期路径和类型错误
 │
 ├── templates/                        接入或记录任务时使用的可填写模板
-│   ├── project.md                    项目事实模板：技术栈、目录、组件、接口、环境和命令
+│   ├── project.md                    项目事实模板：工程类别、工具链决策、目录、组件、接口和验收命令
 │   └── task.md                       任务模板：目标、非目标、验收样例、风险和交付证据
 │
 ├── tests/                            “工具代码是否正确”的自动测试
-│   ├── kit.test.mjs                  隔离临时工程中验证安装、冲突、升级、执行和失败行为
+│   ├── kit.test.mjs                  隔离临时工程中验证安装、存量工具链保留、冲突、升级、执行和失败行为
 │   └── structure.test.mjs            验证结构漂移检测、隐藏文件、排除项与错误文档的处理
 ├── evals/                            “Agent 是否做对”的行为评估资料
 │   ├── README.md                     评估方法、证据要求、重复执行与评分方式
-│   └── scenarios.json                11 个评估场景：输入、准备条件、预期和禁止行为
+│   └── scenarios.json                18 个评估场景：输入、准备条件、预期和禁止行为
 │
 ├── docs/                             背景、设计、操作与验证记录
 │   ├── architecture.md               为什么这样分层、分发策略、职责和不支持的能力
@@ -97,7 +98,7 @@ agent-kit/
 
 前者是规则，后者是做事方法。两者都不会因为文件存在，就自动变成运行过的测试。
 
-每个 Skill 目前只有一个 `SKILL.md`：顶部的 name/description 描述身份与触发条件，正文描述工作方法。没有建立无用途的脚本或 references 空目录；以后确有必要时再扩展。
+每个 Skill 目前只有一个 `SKILL.md`：顶部的 name/description 描述身份与触发条件，正文描述工作方法。description 内容和正文采用中文，字段名与 Skill ID 保持原有英文标识。没有建立无用途的脚本或 references 空目录；以后确有必要时再扩展。
 
 ### catalog 与项目配置
 
@@ -107,7 +108,7 @@ agent-kit/
 
 当前 catalog 已包含格式版本 `schemaVersion` 和发布版本 `version`。项目实际命令、目录、业务文档位置归项目配置，不放进 catalog。后续可按真实需求增加 profile 说明、显式依赖关系或按需模板清单，但必须同时实现安装解析、校验与测试；只添加未被工具读取的字段没有作用。当前依赖关系在安装器中实现，模板统一安装，尚未由这些扩展字段控制。
 
-`common` 配置集包含 common/workflow 两份规范，所以当前 **8 个配置集对应 9 份规范**，并不是数量不一致。
+`common` 配置集包含 common/workflow/tooling 三份规范，所以当前 **8 个配置集对应 10 份规范**，并不是数量不一致。tooling 规定新工程默认选型及存量边界，不会让安装器自动更换业务工程工具链。
 
 ### bin、src、scripts
 
@@ -122,7 +123,7 @@ agent-kit/
 - `tests/` 验证确定性的程序行为，例如冲突时有没有拒绝覆盖、检查命令超时有没有失败。
 - `evals/` 评估 Agent 的工作行为，例如它有没有识别大整数精度风险、有没有谎称浏览器验证通过。
 
-`npm run check` 会运行工具测试，并检查评估场景的定义格式；**不会调用模型执行这 11 个场景**。流程场景包括小修改连续交付、遵从用户分步要求，以及未确定的安全边界需要确认。
+`npm run check` 会运行工具测试，并检查评估场景的定义格式；**不会调用模型执行这 18 个场景**。场景涵盖流程边界、前端质量及数据契约；工具链场景补充新工程默认值、存量工程不迁移和 Angular 构建边界。
 
 ### 根目录 AGENTS 与安装生成的 AGENTS 区块
 
@@ -171,6 +172,7 @@ your-project/
 | --- | --- |
 | 约束所有项目都遵守的原则 | standards/common.md |
 | 调整任务流程和需要人工确认的边界 | standards/workflow.md |
+| 确定新工程工具链及存量兼容原则 | standards/tooling.md |
 | 统一跨框架的 UI 与交互原则 | standards/frontend.md |
 | 调整某个框架的编码方式 | standards/angular.md、vue.md、react.md |
 | 改进某类任务的操作方法 | 对应 Skill 的 SKILL.md |

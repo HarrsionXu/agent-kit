@@ -1,16 +1,16 @@
 ---
 name: kit-data-change
-description: Assess and prepare backend schema changes and data migrations. Use when modifying persistent fields, Prisma models, migration scripts, backfills, or delete/retention behavior; not as automatic permission to run migrations.
+description: 评估并准备后端 schema 变更与数据迁移。适用于修改持久化字段、Prisma 模型、迁移脚本、数据回填或删除/保留行为；使用此 Skill 不等于获准执行迁移。
 ---
 
-# Data change boundary
+# 数据变更边界
 
-Read project backend rules, schema, migration history and environment-specific release procedure. Never copy migration numbering, host paths or deploy commands from another repository.
+阅读项目后端规则、schema、迁移历史和对应环境的发布流程。不得照搬其他仓库的迁移编号、主机路径或部署命令。
 
-Before implementation identify existing data behavior, compatibility with old/new clients, nullable/default semantics, constraints/indexes, backfill cost and recovery plan. Destructive or irreversible changes require explicit approval and validated exact targets.
+实现前明确现有数据行为、新旧客户端兼容性、可空/默认值语义、约束/索引、回填成本和恢复方案。破坏性或不可逆变更必须获得明确批准，并核验准确的操作目标。
 
-Keep controller validation, DTO/OpenAPI, service boundaries and audit behavior consistent. Record whether a schema change requires a migration, deployment ordering, or a separate backfill.
+保持 controller 校验、DTO/OpenAPI、服务边界和审计行为一致。记录 schema 变更是否需要迁移、特定部署顺序或单独回填。
 
-Generate or edit migration artifacts only within the request. Use disposable databases for tests when authorized. Do not connect to production, run reset, apply migrations, seed or send notifications as a side effect of preparing code.
+只在请求范围内生成或编辑迁移产物。获授权时使用可丢弃的测试数据库。准备代码不能附带连接生产、执行 reset、应用迁移、写入种子数据或发送通知。
 
-Deliver generated artifacts, tests actually run, required operational steps and unresolved compatibility risks. Local schema validation is not proof that a remote migration ran successfully.
+交付生成的产物、实际执行的测试、必要运维步骤和未解决的兼容性风险。本地 schema 校验不能证明远程迁移执行成功。

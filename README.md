@@ -8,7 +8,7 @@
 
 ## 已具备
 
-- 8 个配置集、9 份规则：公共工程、工作流程、前端、Angular、Vue、React、后端、微前端、运营后台。
+- 8 个配置集、10 份规则：公共工程、工作流程、工具链、前端、Angular、Vue、React、后端、微前端、运营后台。
 - 7 个按需 Skills：任务闭环、证据审查、UI、接口契约、数据变更、CRUD、导入诊断。
 - 无第三方运行时依赖的 CLI：预览接入、受保护安装、版本/摘要锁定、完整性检查、就绪诊断、本地验证报告。
 - 安装与 runner 自动回归测试，以及独立的 Agent 行为评估场景。
@@ -75,11 +75,14 @@ common 自动加入；framework/admin/microfrontend 自动引入 frontend。所�
 
 新增、删除、移动、重命名文件或调整职责时，必须同步更新结构说明；`npm run check` 会检查结构遗漏和过期路径，职责描述仍需审查。
 
+本仓库采用“中文正文＋英文技术标识”：说明文档、Skill 描述与正文、解释性注释以中文维护，文件名、配置字段、命令和代码标识保留原文；不维护两套完整翻译。具体约定见 [维护规则](AGENTS.md)。
+
 ## 以后主要维护哪里
 
 - [工程结构逐文件说明](docs/structure.md)：每个目录和文件的职责，以及接入后目标工程中会出现什么。
 - [通用工程规范](standards/common.md)：判断、边界、数据、证据。
-- [前端规范](standards/frontend.md)：设计与交互；具体视觉 token 放业务仓库。
+- [工具链与新工程选型](standards/tooling.md)：新工程默认 pnpm、按应用类型选择构建链；版本、锁文件、CI 与存量工程兼容边界。
+- [前端规范](standards/frontend.md)：Tailwind、页面设计、状态分层、TypeScript、禁止硬编码、注释和可维护性；具体视觉 token 放业务仓库。
 - [工作流程](standards/workflow.md)：按风险采用轻重不同的闭环。
 - [任务模板](templates/task.md)：验收案例和交付证据。
 - [配置与安全说明](docs/configuration.md)：命令、monorepo、升级和恢复。
@@ -99,6 +102,12 @@ common 自动加入；framework/admin/microfrontend 自动引入 frontend。所�
 ## 版本维护
 
 修改中央规则/Skills/工具后，同步提升 package.json 和 catalog.json 版本、运行 `npm run check`，审核变更，再由业务项目显式升级。不自动追踪 main，不覆盖项目手写文件。同版本内容改变会被已接入项目拒绝。
+
+0.1.5 增加工具链标准并随 common 配置集分发：新工程默认 pnpm，Vue/React SPA 默认 Vite，Angular 使用官方 CLI 构建链；明确版本固定、锁定安装和验收。存量工程及其新增模块保留原工具，不自动迁移；本 Kit 继续使用 npm。
+
+0.1.4 将 7 个 Skill 的描述与正文统一为中文，并翻译解释性源码注释；保留技术标识、规则语义及工具行为。只更新中央仓库，不自动升级业务工程副本。
+
+0.1.3 加入八项前端编码与设计要求，并同步 UI 审查 Skill 和行为评估定义。Tailwind 为默认样式策略，自定义样式需就地注释原因；需求未指定时不添加页面级 title/header。完整边界和验收见前端规范。此版本不会自动更新业务工程已安装的副本。
 
 0.1.2 明确风险分级流程、角色职责、暂停条件和任务记录。已有项目需显式升级固定版本；若项目手写规则仍要求逐角色确认，需要维护者明确统一，安装器不会擅自删除它们。修改文件不会清除旧对话里的指令，重新启动目标目录的 Codex 运行后应核对实际加载的规则。[AGENTS 官方说明](https://learn.chatgpt.com/docs/agent-configuration/agents-md)。
 

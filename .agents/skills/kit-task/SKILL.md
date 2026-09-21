@@ -1,14 +1,14 @@
 ---
 name: kit-task
-description: Establish a scoped engineering task and acceptance loop. Use when starting a feature, fixing a bug, continuing an incomplete implementation, or coordinating a multi-step change in a project using Agent Kit.
+description: 明确工程任务范围并完成验收闭环。适用于已接入 Agent Kit 的项目中开始新功能、修复缺陷、继续未完成的实现，或协调包含多个步骤的变更。
 ---
 
-# Task loop
+# 任务闭环
 
-1. Read effective repository instructions and project facts. For installed projects read `.agent-kit/project.json`, its documents, and scope-matched rules. In the kit source read `standards/common.md` and `standards/workflow.md`.
-2. Separate the goal from the proposed implementation. Verify uncertain assumptions using code or authoritative contracts. Challenge a proposal only with a concrete risk or counterexample.
-3. Determine whether the request authorizes diagnosis only or implementation. Preserve unrelated changes; do not infer deployment, database mutation, or outbound-message authority.
-4. Define observable acceptance examples before coding: state/input, action, expected request/result. Use the task template for substantial changes; a short delivery record suffices for small fixes.
-5. Choose only relevant framework rules and task Skills. Small tasks complete in one loop; pause for material unresolved decisions, not for ceremonial role changes.
-6. Implement, run appropriate checks, inspect actual UI where relevant, correct failures, and rerun affected checks. Never equate static hygiene with browser verification.
-7. Deliver changes, actual evidence, unverified aspects, and remaining decisions. If blocked, record exactly what is missing; do not manufacture completion.
+1. 阅读有效的仓库指令和项目事实。已接入项目需读取 `.agent-kit/project.json`、其中声明的文档及匹配当前目录范围的规则；维护 Kit 源码时读取 `standards/common.md`、`standards/workflow.md` 和 `standards/tooling.md`。先识别新工程或存量工程：新工程落实工具链默认值，存量工程及其新增模块沿用原工具链；不能将规范接入当作迁移授权。
+2. 区分目标与用户提出的实现方案。通过代码或权威契约核实不确定的假设；质疑方案时必须给出具体风险或反例。
+3. 判断请求仅授权诊断还是也授权实现。保留无关改动，不推定已获部署、修改数据库或发送对外消息的授权。
+4. 编码前定义可观察的验收样例：状态/输入、操作、预期请求/结果。较大变更使用任务模板，小修复保留简短交付记录即可。
+5. 只选择相关框架规则和任务 Skill。小任务在一个闭环内完成；因尚未确定的重要决策暂停，不为形式上的角色切换停顿。
+6. 实现并执行适当检查；涉及 UI 时核验实际界面，修正失败并重跑受影响的检查。静态规范检查不能等同于浏览器验证。
+7. 交付改动、实际证据、未验证项和剩余决定。若受阻，准确记录缺失条件，不虚构完成结果。

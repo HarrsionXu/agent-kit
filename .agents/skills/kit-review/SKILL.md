@@ -1,20 +1,21 @@
 ---
 name: kit-review
-description: Review an implementation against acceptance evidence and regression risks. Use for code reviews, pre-delivery verification, checking an agent result, or evaluating whether a task is actually complete.
+description: 对照验收证据和回归风险审查实现。适用于代码审查、交付前验证、检查 Agent 产出，或评估任务是否真正完成。
 ---
 
-# Evidence review
+# 验收证据审查
 
-Read the task goal, effective rules, changed files, and project verification commands. A review request is read-only unless implementation is also authorized.
+阅读任务目标、有效规则、变更文件和项目验证命令。审查请求默认只读，除非用户也已授权实现。
 
-Check:
+检查以下内容：
 
-- The implementation satisfies each acceptance example, including empty/error/loading/permission states.
-- API fields, long IDs, enum combinations, pagination, timezone, and save payloads follow verified contracts.
-- UI uses the project's component/token baseline, handles long labels and small heights, and preserves navigation/scroll position where required.
-- No hidden mock success, swallowed errors, unrequested migration, or destructive side effects.
-- Tests exercise the changed behavior rather than merely naming the function or checking that a file exists.
+- 实现满足每个验收样例，包括空数据、错误、加载中和权限状态。
+- API 字段、大整数 ID、枚举组合、分页、时区和保存请求体符合已验证的契约。
+- UI 沿用项目组件和设计 token 基线，能处理长标签和较小视口高度，并按需求保留导航与滚动位置。
+- 不存在隐蔽的 mock 成功、吞掉错误、未经要求的迁移或破坏性副作用。
+- 新工程的工具链选择、版本、锁文件和 CI 符合 tooling 规范，例外有依据；存量工程没有被擅自更换包管理器、构建器或升级依赖。类型检查、构建与产物验证的证据分别明确。
+- 测试实际覆盖变更后的行为，不只是提及函数名或检查文件存在。
 
-Run safe configured checks where available. For installed kits, `verify` is preview-only without `--execute`; review the underlying commands before running. This is not a sandbox.
+存在已配置且安全的检查时执行它们。已安装 Kit 的 `verify` 在未带 `--execute` 时仅预览；实际执行前审查底层命令。该工具不是安全沙箱。
 
-Report actionable findings with severity, location, trigger, impact, and recommendation. If none, say what was covered and what was not. Do not call self-review independent QA. Do not produce a deployment success claim from a local build.
+报告可执行的审查发现，包含严重程度、位置、触发条件、影响和建议。没有发现时说明覆盖范围与未覆盖部分。自查不能称为独立 QA，本地构建成功不能表述为部署成功。

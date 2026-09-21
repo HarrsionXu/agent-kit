@@ -1,16 +1,16 @@
 ---
 name: kit-crud
-description: Implement or assess business CRUD and administrative workbench interactions. Use for searchable paginated lists, create/edit dialogs, configuration forms, details workbenches, and staged attachment actions in admin applications.
+description: 实现或评估业务 CRUD 与管理工作台交互。适用于管理应用中的搜索分页列表、新建/编辑弹窗、配置表单、详情工作台，以及暂存后提交的附件操作。
 ---
 
-# CRUD versus workbench
+# CRUD 与工作台的选择
 
-Read the local framework and admin rules, reusable controls, API contract and existing nearby screens. Reuse the project's actual component library; do not assume Element Plus in Angular or React.
+阅读本项目的框架与管理后台规则、可复用控件、API 契约和相关现有页面。复用项目实际采用的组件库，不在 Angular 或 React 项目中默认使用 Element Plus。
 
-Choose a compact dialog for a small form. Use a page or drawer for multistep collaboration, large datasets or persistent navigation. Keep list/edit/details models separate and submit an explicit writable-field payload.
+小型表单选择紧凑弹窗；多步骤协作、大数据集或需保留导航的场景使用页面或抽屉。区分列表、编辑和详情模型，请求体只提交明确可写的字段。
 
-Define search/reset/page behavior, total counts, stable row identity and state refresh after mutations. Prevent stale async responses from replacing a newer query. Avoid N+1 detail calls when list data or batching suffices.
+定义搜索、重置、分页、总数、稳定行标识，以及写操作后的状态刷新。防止旧异步响应覆盖较新的查询结果。列表数据或批量请求已足够时，避免 N+1 详情调用。
 
-Model file additions/removals as a draft when cancellation must discard changes. Do not remotely delete on click if Save is the agreed commit boundary. Distinguish immediate actions and staged changes visibly.
+若取消操作应丢弃修改，将文件新增和移除建模为草稿。约定以保存为提交边界时，不能点击删除就执行远程删除。界面应清楚区分立即生效的操作与待提交的变更。
 
-Test cancel, validation, duplicate submission, failed save, retry, long text and row ordering after refresh. A successful toast without a server-side operation is not completion.
+测试取消、校验、重复提交、保存失败、重试、长文本及刷新后的行顺序。没有对应服务端操作的成功提示不代表任务完成。

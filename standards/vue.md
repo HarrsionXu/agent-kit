@@ -2,6 +2,8 @@
 
 适用 Vue 路径。Vue 版本、Options/Composition API、Pinia 及组件库遵从目标工程，不自动批量重构。
 
+新建客户端 SPA 按 [工具链标准](tooling.md) 使用 pnpm、Vite 和 TypeScript；SSR/SSG 使用所选框架官方构建链。存量工程保留原有工具。
+
 - HTTP：复用集中客户端/API 模块；不在页面另建 axios 或复制 token/签名。PureHttp 与 libs/core 客户端是不同项目的适配，不互相覆盖。
 - 路由：Vue Router 按业务域组织；明确 params/query 与状态来源，列表返回保留筛选分页，动态权限菜单与 guard 一致。
 - 状态：ref/computed 管局部，Pinia 管需要共享的客户端状态；服务端缓存及刷新策略单独定义，避免 Store 堆积全部响应。

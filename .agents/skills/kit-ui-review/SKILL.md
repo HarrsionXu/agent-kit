@@ -1,17 +1,24 @@
 ---
 name: kit-ui-review
-description: Design, implement, or validate product-native frontend interfaces. Use for pages, dialogs, tables, forms, responsive layout, interaction changes, or visual regressions in Angular, Vue, and React projects.
+description: 设计、实现或验证符合产品既有风格的前端界面。适用于 Angular、Vue 和 React 项目中的页面、弹窗、表格、表单、响应式布局、交互变更或视觉回归。
 ---
 
-# Product-native UI
+# 符合产品既有风格的 UI
 
-Read scope-specific frontend rules and the project's tokens, shared components, and two relevant accepted screens. Do not choose a new visual style from a generic trend list.
+阅读当前范围适用的前端规则、项目设计 token、共享组件，以及两个相关且已获认可的页面。不要从通用设计趋势列表中另选一套视觉风格。
 
-1. State the user task, hierarchy, primary action, and expected feedback. Distinguish read-only context from editable data.
-2. Reuse project primitives. Choose density, spacing, typography, surfaces and state colors from existing tokens; add a new token only with an identified repeated need.
-3. Avoid ornamental gradients, glass, oversized shadows and explanatory banners unless the product intentionally uses them. These are context-sensitive design decisions, not a universal ban on effects.
-4. Specify loading/empty/error/success/disabled states and keyboard behavior. Keep scroll inside bounded panels, floating menus within the viewport, and header/actions stable where the workflow requires them.
-5. Test long and multilingual text, validation, repeated submission, retry, pagination and relevant viewport sizes. Use isolated data for destructive operations.
-6. Inspect the rendered result and interactions; record route, viewport and evidence. A screenshot alone cannot prove network behavior, and passing a build cannot prove layout.
+1. 明确用户任务、信息层级、主要动作和预期反馈。区分只读上下文与可编辑数据。
+2. 复用项目基础组件。从已有 token 选择信息密度、间距、排版、表面样式和状态颜色；只有确认存在重复使用需求时才新增 token。
+3. 遵循前端规范中的标题和视觉规则。没有明确需求，不增加页面 title/header，也不用问候语或横幅重复账号/项目上下文。保留必要的字段、分组、弹窗标签和可访问名称。避免重色横幅、渐变、毛玻璃、过重阴影及装饰性单边彩色边框；视觉例外必须有已确认的设计用途，不能只以历史页面为依据。
+4. 定义加载中、空数据、错误、成功、禁用状态及键盘行为。滚动限制在有边界的面板内，浮动菜单保持在视口内；工作流要求固定的页头和操作区应保持稳定。
+5. 测试长文本、多语言文本、校验、重复提交、重试、分页及相关视口尺寸。破坏性操作使用隔离数据。
+6. 检查实际渲染和交互，记录路由、视口与证据。单张截图不能证明网络行为，构建通过不能证明布局正确。
 
-If a project-installed ui-ux-pro-max or design Skill is relevant, read it explicitly and use it within project constraints; do not claim it ran because it is installed. Never silently download another skill or send private project information to an external design service.
+交付前，按前端规范的审查表同时检查变更代码和界面表现：
+
+- 优先使用 Tailwind utility 和项目 token。检查独立样式、组件样式块、CSS-in-JS 和内联覆盖；每处必要的自定义样式都需在附近注释实际限制及作用范围。未经相应范围授权，不替换项目样式体系。
+- 沿有类型定义的状态层与数据访问边界追踪 UI 动作。业务规则和复杂异步编排不放在渲染代码中；局部短生命周期 UI 状态不必全局化。检查模型、框架类型/模板校验和相关状态转换。
+- 将业务值和分支追溯到契约、上下文、配置或领域定义。把样例特定值移入常量不能消除硬编码。固定演示行为需用户明确要求且隔离范围；测试数据不能成为生产规则。
+- 检查命名是否有明确含义、职责是否内聚、复用是否合理，以及注释是否解释非显然的规则、约束和取舍。如实报告证据缺口；关键字扫描不能证明视觉质量或可维护性达标。
+
+项目已安装的 ui-ux-pro-max 或设计 Skill 与任务相关时，明确读取后在项目约束内使用；不能仅因已安装就宣称使用过。不得擅自下载其他 Skill，也不得擅自向外部设计服务发送项目私有信息。

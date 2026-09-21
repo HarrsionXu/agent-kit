@@ -6,7 +6,7 @@ import os from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { SOURCE, install, check, doctor, verify, safePath, targetRoot, loadCatalog, selectProfiles, hash } from '../src/kit.mjs';
 
-// Generated fixture writes are confined to mkdtemp directories owned by a test.
+// 生成的测试数据仅写入当前测试通过 mkdtemp 创建并管理的目录。
 function fixture(t) {
   const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'agent-kit-test-')));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
@@ -49,6 +49,27 @@ test('repeat install is idempotent and does not reset human project configuratio
   const root = setup(t); const config = configure(root);
   const result = install(root, ['angular'], { apply: true });
   assert.deepEqual(result.files, []); assert.deepEqual(readJson(root, '.agent-kit/project.json'), config);
+});
+test('分发工具链规则时保留存量 npm 工程的依赖、锁文件、构建与 CI', (t) => {
+  const root = fixture(t);
+  const existing = {
+    'package.json': { name: 'existing-app', private: true, packageManager: 'npm@10.8.2', scripts: { build: 'webpack' } },
+    'package-lock.json': { name: 'existing-app', lockfileVersion: 3, packages: {} },
+    'webpack.config.cjs': 'module.exports = { mode: "production" };\n',
+    '.github/workflows/ci.yml': 'name: existing-ci\non: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - run: npm ci\n      - run: npm run build\n',
+  };
+  for (const [rel, value] of Object.entries(existing)) write(root, rel, value);
+  const before = Object.fromEntries(Object.keys(existing).map((rel) => [rel, fs.readFileSync(path.join(root, rel), 'utf8')]));
+  install(root, ['react'], { apply: true });
+  const rule = '.agent-kit/rules/tooling.md';
+  assert.equal(fs.readFileSync(path.join(root, rule), 'utf8'), fs.readFileSync(path.join(SOURCE, 'standards/tooling.md'), 'utf8'));
+  assert.ok(readJson(root, '.agent-kit/lock.json').profileRules.common.includes('tooling'));
+  assert.equal(check(root).status, 'intact');
+  assert.deepEqual(install(root, ['react'], { apply: true }).files, []);
+  for (const [rel, value] of Object.entries(before)) assert.equal(fs.readFileSync(path.join(root, rel), 'utf8'), value);
+  assert.ok(!fs.existsSync(path.join(root, 'pnpm-lock.yaml')));
+  assert.ok(!fs.existsSync(path.join(root, 'pnpm-workspace.yaml')));
+  assert.ok(!fs.existsSync(path.join(root, 'vite.config.ts')));
 });
 test('edits outside the AGENTS block are retained', (t) => {
   const root = setup(t); fs.appendFileSync(path.join(root, 'AGENTS.md'), '\nCustom local rules.\n');

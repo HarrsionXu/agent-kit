@@ -1,16 +1,16 @@
 ---
 name: kit-import-diagnose
-description: Diagnose spreadsheet or batch import failures across parsing, preview, validation and persistence. Use for wrong field mappings, lost values, rejected rows, mismatched preview counts or partially successful imports.
+description: 沿解析、预览、校验和持久化链路诊断电子表格或批量导入失败。适用于字段映射错误、值丢失、行被拒绝、预览数量不一致或导入部分成功。
 ---
 
-# Import diagnosis
+# 导入问题诊断
 
-Start read-only unless a fix is requested. Trace the smallest representative, anonymized row through source header → parser → normalization → preview → DTO → persistence → response.
+除非用户要求修复，否则从只读诊断开始。选取最小且有代表性的脱敏数据行，沿源表头 → 解析器 → 规范化 → 预览 → DTO → 持久化 → 响应追踪。
 
-Check header aliases, whitespace, locale/date formats, number precision, required/optional fields, empty versus zero/false, duplicate identity and row numbering. Compare preview and final submit mappings; do not assume they share code.
+检查表头别名、空白字符、地区/日期格式、数字精度、必填/可选字段、空值与 0/false 的区别、重复标识和行号。比较预览与最终提交的映射，不能假定它们共用代码。
 
-Separate parse errors, validation errors, network errors and partial write outcomes. Never retry an entire destructive batch without understanding idempotency and already-persisted rows.
+区分解析错误、校验错误、网络错误和部分写入结果。未明确幂等性与已持久化的行之前，绝不重试整个具有破坏性的批次。
 
-For a fix, use minimal synthetic fixtures and regression tests for the broken mapping and nearby valid cases. Preserve useful row-level error reporting; do not suppress rejected rows to make totals agree.
+修复时使用最小合成测试数据，为错误映射和相邻有效场景补充回归测试。保留有用的行级错误信息，不能隐藏被拒绝的行来让总数一致。
 
-Deliver root cause with evidence, affected stages, code changes if authorized, and verification limits. Do not embed real supplier or employee records in fixtures, logs or central standards.
+交付有证据支持的根因、受影响环节、获授权时的代码修改，以及验证边界。不能把真实供应商或员工记录写入测试数据、日志或公共规范。

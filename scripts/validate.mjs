@@ -19,8 +19,8 @@ for (const [name, profile] of Object.entries(catalog.profiles)) {
   for (const skill of profile.skills) {
     assert.match(skill, /^kit-[a-z0-9-]+$/);
     const body = fs.readFileSync(safePath(SOURCE, `.agents/skills/${skill}/SKILL.md`), 'utf8');
-    // Intentionally restrict our frontmatter to simple name/description scalars.
-    // This validator is not a general YAML parser.
+    // 本仓库将 frontmatter 限定为简单的 name/description 标量。
+    // 此校验器不是通用 YAML 解析器。
     const match = body.match(/^---\nname: ([a-z0-9-]+)\ndescription: ([^\n]+)\n---\n/);
     assert.ok(match, `Invalid skill frontmatter: ${skill}`);
     assert.equal(match[1], skill);

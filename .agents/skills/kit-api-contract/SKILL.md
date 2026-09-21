@@ -1,18 +1,18 @@
 ---
 name: kit-api-contract
-description: Check or implement an API contract across frontend and backend boundaries. Use when adding endpoints, wiring a UI action, fixing parameter types or status mappings, or changing response structures and error handling.
+description: 核对或实现跨前后端边界的 API 契约。适用于新增接口、接入 UI 操作、修正参数类型或状态映射，以及变更响应结构和错误处理。
 ---
 
-# Contract loop
+# 契约核验闭环
 
-Read the caller, transport adapter, DTO/schema and authoritative endpoint documentation. For multiple repositories read each repository's instructions before accessing it. Permission to inspect does not authorize changing all repositories.
+阅读调用方、传输适配层、DTO/schema 和权威接口文档。涉及多个仓库时，访问每个仓库前先读取其指令。获准查看不等于获准修改所有仓库。
 
-Create a compact operation mapping: user action → method/path/host/auth → exact payload → response → UI state. Include pagination, timezone, null/zero/false, long identifiers and failure semantics. Do not infer a working host from the page domain.
+建立简明的操作映射：用户动作 → 请求方法/路径/主机/认证 → 精确请求体 → 响应 → UI 状态。涵盖分页、时区、null/0/false、大整数标识符和失败语义。不能从页面域名推断可用的接口主机。
 
-Use explicit payload allowlists. Preserve integer precision end-to-end; converting an already-rounded Number to a string does not repair the ID. For numeric JSON contracts outside the safe integer range use a verified lossless serialization strategy, not Number(id).
+使用明确的请求字段白名单。端到端保留整数精度；已丢失精度的 Number 转为字符串也无法恢复 ID。契约要求以 JSON 数字传输超出安全整数范围的值时，使用已验证的无损序列化策略，不能使用 Number(id)。
 
-Map statuses by exact enum and business phase, not string truthiness or attachment secrecy alone. Test invitation, submission, opening, scoring and award as separate axes when the API separates them.
+按精确枚举和业务阶段映射状态，不能只根据字符串真值或附件是否密封判断。接口将邀请、提交、开标、评分和授标分开表达时，分别作为独立维度测试。
 
-Keep authentication errors scoped to their authentication domain. Do not globally log out a valid session merely because another service rejects a token.
+认证错误的处理限定在对应认证域。不能仅因另一个服务拒绝 token，就全局登出仍有效的会话。
 
-Update only authorized code/types/docs and regression tests. If an endpoint is absent, record the gap and display the agreed unsupported behavior; never substitute mock success. Real approval/send/start APIs need explicit task authority and a safe test context.
+只更新获授权的代码、类型、文档和回归测试。接口缺失时记录缺口，并按约定呈现尚不支持的行为；绝不以 mock 成功替代。调用真实审批、发送或启动接口，必须有明确的任务授权和安全测试环境。

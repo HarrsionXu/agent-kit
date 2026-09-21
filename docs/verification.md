@@ -73,3 +73,28 @@
 - Front 接入前 25 个用户改动/新增文件逐一 SHA-256 比对未变；Apps 原 Nx 自动管理区块逐字保留。原 AGENTS 已由安装器备份。
 - 本地 npm run check 通过：40 项工具/结构测试、资料及链接检查通过。安装副本可在本项目离线运行，不依赖中央工程路径。
 - 按 kit-task/kit-review 完成接入闭环与自查，未做独立 Agent 行为评估、全量业务构建、浏览器验收、真实接口或远程 CI。Front 基线缺口保留为后续独立任务，不因本轮接入扩大修改范围。
+
+## 0.1.3 前端编码与设计要求
+
+- 日期：2026-09-21。按用户八项要求扩展 frontend 规范：Tailwind 优先及自定义样式注释、需求指定页面标题、克制视觉风格、状态与 UI 分离、TypeScript 模型、禁止技术/业务硬编码、复杂逻辑注释及维护复用；补充逐项审查表和合理例外。
+- 同步 kit-ui-review、README、来源与结构说明；package.json/catalog.json 升至 0.1.3。新增 4 个行为评估定义，共 15 个；未把定义校验称为模型行为通过。
+- `npm run check` 通过：40 项工具/结构测试全部通过，无跳过；8 profiles、9 rules、7 Skills、15 个评估定义、本地文档链接和 37 个源文件结构校验通过。既有工具测试在隔离临时项目验证安装、摘要和升级行为。
+- Skill Creator 的 `quick_validate.py` 对修改后的 kit-ui-review 返回 `Skill is valid!`；`git diff --check` 通过。按 kit-task/kit-review 对八项覆盖、框架规则兼容性和例外边界做自查，不称为独立审查。
+- 本轮只修改 Kit 规范与配套资料，未改工具运行逻辑；未运行独立模型行为评估、业务应用构建或浏览器验收。未升级相邻工程的固定副本，未提交、推送或发布。
+
+## 0.1.4 中文文档与注释统一
+
+- 日期：2026-09-21。用户确认采用中文正文、保留英文技术标识；7 个 Skill 的 description、标题和操作说明全部转为中文，保留上一轮新增的前端审查要求。根 AGENTS.md 增加持续维护约定，README、来源及结构说明同步。
+- 翻译 4 个源码/测试文件中的解释性注释。去除独立行注释后与 Git HEAD 逐文件比对，内容完全一致；没有改动可执行逻辑、错误消息、诊断字段或测试断言。package.json/catalog.json 同步升至 0.1.4。
+- `npm run check` 通过：40 项工具/结构测试全部通过，无跳过；8 profiles、9 rules、7 Skills、15 个评估定义、文档链接和 37 个源文件结构校验通过。Skill Creator 的 `quick_validate.py` 对 7 个 Skill 均返回 `Skill is valid!`；`git diff --check` 通过。
+- 按 kit-task、kit-review 和 Skill Creator 对原文/译文做语义自查，检查触发条件、规则力度、授权与例外、验证要求；不是独立审查，也未运行中英文模型行为对照评估，不能据此宣称两种语言的执行效果完全相同。
+- 未自动升级业务工程或第三方 Skill，未修改全局配置，未提交、推送或发布。
+
+## 0.1.5 新工程工具链与存量边界
+
+- 日期：2026-09-21。用户确认新建 JS/TS 工程默认 pnpm、存量工程不迁移。新增 tooling 标准，明确按工程形态选择构建链、Node/工具版本锁定、锁文件、CI 不可变安装、脚本和产物验收；现有仓库中的新模块继续沿用根工具链。
+- common 配置集新增 tooling，安装生成的 AGENTS 入口同步；更新框架规范、项目事实模板、kit-task/kit-review 和相关文档。package.json/catalog.json 同步升至 0.1.5，Kit 自身继续使用 npm，未安装任何新运行时依赖。
+- `npm run check` 通过：41 项工具/结构测试全部通过，无跳过；8 profiles、10 rules、7 Skills、18 个行为评估定义、文档链接和 38 个源文件结构校验通过。新增隔离回归验证 tooling 被分发和锁定、重复接入幂等，且存量 npm 工程的 package.json、package-lock.json、Webpack 和 CI 文件逐字保留，没有新增 pnpm/Vite 配置。
+- 修改的 kit-task、kit-review 均通过 Skill Creator 的 quick_validate.py；`git diff --check` 通过。按上述 Skills 自查新旧工程边界、默认值、规则加载路径和文档一致性，不称为独立审查。
+- 新增 3 个模型行为评估定义，分别覆盖新工程默认选型、存量工具链保留和 Angular 构建边界；未运行独立模型行为评估，也未实际创建/构建业务应用。官方技术文档核对不等于已经验证所有版本组合。
+- 未修改相邻业务仓库、全局包管理器或配置，未自动升级已接入副本，未提交、推送或发布。

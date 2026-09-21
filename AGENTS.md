@@ -2,7 +2,7 @@
 
 这是规则、Skills、分发和验证工具仓库，不是业务前端框架，不接管模型运行时。
 
-开始前完整读取 `standards/common.md`、`standards/workflow.md` 和 `docs/architecture.md`。改安装器/runner 时读取 `docs/configuration.md`；改 Skill 使用 Skill Creator（可用时），并运行技能校验。
+开始前完整读取 `standards/common.md`、`standards/workflow.md`、`standards/tooling.md` 和 `docs/architecture.md`。改安装器/runner 时读取 `docs/configuration.md`；改 Skill 使用 Skill Creator（可用时），并运行技能校验。
 
 - 按 workflow 的风险分级，在用户授权范围内连续完成实现和验证；角色表示职责，不强制四个 Agent 或四次交接。只在关键决策、超出授权或用户明确要求分步时暂停；诊断/审查请求不自动授权修复。
 - 区分目标、事实、假设和方案。不要盲从，也不要为了反对而制造阻碍。
@@ -19,3 +19,10 @@
 ## 验证与交付
 
 `npm run check` 包括资料完整性、docs/structure.md 结构漂移检查和 Node 测试；安装与执行测试使用隔离临时目录。结构检查核对路径、文件/目录类型及文件说明是否存在，不验证职责描述的语义，交付前仍需对照实际实现审查。交付区分工具测试、Agent 行为评估和真实业务验证。
+
+## 文档与注释语言
+
+- 本仓库的说明文档、规范、模板、Skill 正文及 description 内容统一使用中文；复杂代码注释用中文解释依据和边界，必要技术术语保留英文。
+- 保留文件名、目录名、Skill ID、配置字段名、命令、API/类型/变量名和代码示例的实际标识，不翻译 `SKILL.md`、`name`、`description`、`kit-*` 等机器识别内容。
+- 维护一套中文正文，不建立重复的完整英文副本。翻译必须保留原规则的力度、触发条件、例外、授权边界和验证要求，不借翻译新增或删除行为。
+- 语言约定适用于本 Kit 的维护；不自动改写已接入项目、第三方 Skill 或工具的原始输出。错误消息、诊断字段及测试断言不因文档翻译而改动。
