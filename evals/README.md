@@ -18,3 +18,5 @@ CLI 单测只能证明工具行为，不能证明模型会遵守规则。这里�
 | --- | --- | --- | --- | --- | --- |
 
 后续优先把确定性失败固化成真实业务回归测试，例如状态映射、精度、滚动边界、上传 payload，再保留模型行为评估来验证“是否主动发现这些风险”。
+
+设计流程优先试跑 `ui-design-new-page`、`ui-design-small-change`、`ui-design-external-mismatch`、`ui-design-unconfirmed-baseline` 和 `ui-review-readonly`。比较相同模型、任务与项目基线下的实际任务覆盖、状态遗漏、风格偏离、返工量及时间/token，不用 Skill 数量或单张截图的观感评分代替效果验证。场景定义本身不代表这些试跑已经执行。

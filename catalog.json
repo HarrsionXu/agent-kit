@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "profiles": {
     "common": { "rules": ["common", "workflow", "tooling"], "skills": ["kit-task", "kit-review", "kit-api-contract"] },
-    "frontend": { "rules": ["frontend"], "skills": ["kit-ui-review"] },
+    "frontend": { "rules": ["frontend", "frontend-design"], "skills": ["kit-ui-design", "kit-ui-review"] },
     "angular": { "rules": ["angular"], "skills": [] },
     "vue": { "rules": ["vue"], "skills": [] },
     "react": { "rules": ["react"], "skills": [] },

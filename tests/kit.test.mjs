@@ -77,6 +77,37 @@ test('edits outside the AGENTS block are retained', (t) => {
   install(root, ['angular', 'backend'], { apply: true });
   assert.ok(fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8').endsWith('Custom local rules.\n'));
 });
+test('前端设计分发保留第三方 Skill 与项目自有基线，且不为后端安装设计 Skill', (t) => {
+  const root = fixture(t);
+  const ownedByProject = {
+    '.agents/skills/ui-ux-pro-max/SKILL.md': '# Existing reference skill\nKeep this local source unchanged.\n',
+    'docs/design-baseline.md': '# Approved project baseline\nExisting tokens and component references.\n',
+    '.agent-kit/project.md': '# Project facts\nUse docs/design-baseline.md.\n',
+  };
+  for (const [rel, text] of Object.entries(ownedByProject)) write(root, rel, text);
+  install(root, ['vue'], { apply: true });
+  const expectedSources = {
+    '.agent-kit/rules/frontend-design.md': 'standards/frontend-design.md',
+    '.agents/skills/kit-ui-design/SKILL.md': '.agents/skills/kit-ui-design/SKILL.md',
+    '.agent-kit/templates/design-baseline.md': 'templates/design-baseline.md',
+    '.agent-kit/templates/ui-design.md': 'templates/ui-design.md',
+  };
+  const lock = check(root).lock;
+  for (const [dest, source] of Object.entries(expectedSources)) {
+    const content = fs.readFileSync(path.join(root, dest), 'utf8');
+    assert.equal(content, fs.readFileSync(path.join(SOURCE, source), 'utf8'));
+    assert.equal(lock.files[dest], hash(content));
+  }
+  assert.ok(lock.profileRules.frontend.includes('frontend-design'));
+  for (const [rel, text] of Object.entries(ownedByProject)) {
+    assert.equal(fs.readFileSync(path.join(root, rel), 'utf8'), text);
+    assert.ok(!Object.hasOwn(lock.files, rel));
+  }
+  assert.deepEqual(install(root, ['vue'], { apply: true }).files, []);
+  const backend = setup(t, ['backend']);
+  assert.ok(!fs.existsSync(path.join(backend, '.agents/skills/kit-ui-design')));
+  assert.ok(!fs.existsSync(path.join(backend, '.agent-kit/rules/frontend-design.md')));
+});
 test('managed rule drift blocks upgrade before writes', (t) => {
   const root = setup(t); write(root, '.agent-kit/rules/angular.md', 'custom change');
   assert.throws(() => install(root, ['angular', 'backend'], { apply: true }), /drift/);

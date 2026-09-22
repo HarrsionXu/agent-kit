@@ -98,3 +98,13 @@
 - 修改的 kit-task、kit-review 均通过 Skill Creator 的 quick_validate.py；`git diff --check` 通过。按上述 Skills 自查新旧工程边界、默认值、规则加载路径和文档一致性，不称为独立审查。
 - 新增 3 个模型行为评估定义，分别覆盖新工程默认选型、存量工具链保留和 Angular 构建边界；未运行独立模型行为评估，也未实际创建/构建业务应用。官方技术文档核对不等于已经验证所有版本组合。
 - 未修改相邻业务仓库、全局包管理器或配置，未自动升级已接入副本，未提交、推送或发布。
+
+## 0.1.6 UI / UX 设计流程与按需参考
+
+- 日期：2026-09-22。用户确认保留 ui-ux-pro-max，但取消全 UI 必用要求，采用项目基线、设计流程和真实验收。新增 frontend-design 规则、kit-ui-design、design-baseline/ui-design 空白模板；kit-ui-review 聚焦验收，task/review 同步路由。frontend 配置集包含新规则和 Skill，版本升至 0.1.6；未改变安装器执行逻辑或新增运行时依赖。
+- 新页面和关键交互的新设计先交付可操作原型，已有确认不重复索取；小调整沿用基线连续完成。默认在浏览器设计，原型使用隔离合成数据，不引入专业设计工具。样板必须有认可依据；模板存在不代表基线已确认。
+- 同步 Supply Chain Front 的 AGENTS 与 frontend-design-principles 两处项目文档，取消强制引用并补充项目设计流程；通过明确项目例外替代旧规则，而非篡改受管理副本。已安装 Kit 仍为 0.1.2，中央 CLI 的 check 返回 intact；未分发新版 Skill 到业务工程，也未升级其他项目。
+- 修改前快照比对显示，该业务工程原有 22 个无关的未提交/新增文件字节未变；只改两份指定文档。第三方 ui-ux-pro-max 目录相对 Git 无差异，保留其原始文件。项目文档链接和两仓库的 git diff --check 通过。
+- `npm run check` 通过：42 项工具/结构测试全部通过，无跳过；8 profiles、11 rules、8 Skills、23 个行为评估定义、文档链接和 42 个源文件结构校验通过。新增隔离测试验证前端设计资源分发与摘要、项目自有基线/第三方 Skill 保留、重复接入幂等，以及后端配置不安装设计 Skill。
+- 新增/修改的 kit-ui-design、kit-ui-review、kit-task、kit-review 均通过 Skill Creator 的 quick_validate.py。初次执行因当前 Python 缺少 PyYAML 失败，随后在临时 venv 安装固定版本 PyYAML 6.0.2 后重验通过；未改全局 Python 或业务依赖。
+- 按 kit-task、kit-review 和 Skill Creator 对引用、设计确认边界、无样板回退、原型隔离、可选参考与只读审查进行自查；不是独立审查。新增 5 个行为评估定义，未运行独立模型行为评估；本轮无业务 UI 改动，未做业务应用构建或浏览器验收，不宣称已验证实际设计效果。未提交、推送或发布。

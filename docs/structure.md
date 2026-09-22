@@ -28,6 +28,7 @@ agent-kit/
 │   ├── workflow.md                   角色职责、风险分级、连续执行与暂停条件、任务记录和证据交付
 │   ├── tooling.md                    新工程工具链默认选型、版本锁定、CI、构建验收与存量兼容边界
 │   ├── frontend.md                   前端设计、Tailwind、状态分层、类型模型、硬编码限制及维护审查
+│   ├── frontend-design.md            UI/UX 基线、页面模式、设计确认、浏览器原型及外部 Skill 按需使用
 │   ├── angular.md                    Angular 的 HTTP、路由、状态、表单、生命周期及验证
 │   ├── vue.md                        Vue 的客户端、Router、Pinia、composable、组件及验证
 │   ├── react.md                      React 的数据 hooks、路由、状态、effect、表单及验证
@@ -42,7 +43,9 @@ agent-kit/
 │       ├── kit-review/
 │       │   └── SKILL.md              对照验收审查实现与证据，说明缺陷及未验证部分
 │       ├── kit-ui-review/
-│       │   └── SKILL.md              按设计基线实现 UI，审查前端代码质量并验证实际交互
+│       │   └── SKILL.md              对照设计基线审查前端代码质量、实际视觉与交互证据
+│       ├── kit-ui-design/
+│       │   └── SKILL.md              将用户任务转为布局、交互与原型，按范围处理设计确认
 │       ├── kit-api-contract/
 │       │   └── SKILL.md              核对请求/响应、鉴权、ID 精度、状态映射和接口缺口
 │       ├── kit-data-change/
@@ -62,14 +65,16 @@ agent-kit/
 │
 ├── templates/                        接入或记录任务时使用的可填写模板
 │   ├── project.md                    项目事实模板：工程类别、工具链决策、目录、组件、接口和验收命令
+│   ├── design-baseline.md            业务工程填写的设计基线模板：权威定义、页面模式、样板及确认依据
+│   ├── ui-design.md                  页面设计记录模板：任务、原型、状态、证据及确认范围
 │   └── task.md                       任务模板：目标、非目标、验收样例、风险和交付证据
 │
 ├── tests/                            “工具代码是否正确”的自动测试
-│   ├── kit.test.mjs                  隔离临时工程中验证安装、存量工具链保留、冲突、升级、执行和失败行为
+│   ├── kit.test.mjs                  隔离工程验证分发、第三方 Skill/项目基线保留、冲突、升级与执行
 │   └── structure.test.mjs            验证结构漂移检测、隐藏文件、排除项与错误文档的处理
 ├── evals/                            “Agent 是否做对”的行为评估资料
 │   ├── README.md                     评估方法、证据要求、重复执行与评分方式
-│   └── scenarios.json                18 个评估场景：输入、准备条件、预期和禁止行为
+│   └── scenarios.json                23 个评估场景：输入、准备条件、预期和禁止行为
 │
 ├── docs/                             背景、设计、操作与验证记录
 │   ├── architecture.md               为什么这样分层、分发策略、职责和不支持的能力
@@ -94,6 +99,8 @@ agent-kit/
 ### standards 与 Skills
 
 - `standards/frontend.md` 规定：长文本可查看全文、弹层不能越出视口、失败保留表单。
+- `standards/frontend-design.md` 规定：设计依据、流程与确认边界、原型隔离及外部参考的使用方式。
+- `kit-ui-design/SKILL.md` 描述：按用户任务制作布局、交互与原型，记录证据与设计决定。
 - `kit-ui-review/SKILL.md` 描述：先读组件和样板，再检查长文本/小视口/失败状态，最后留下页面证据。
 
 前者是规则，后者是做事方法。两者都不会因为文件存在，就自动变成运行过的测试。
@@ -108,7 +115,7 @@ agent-kit/
 
 当前 catalog 已包含格式版本 `schemaVersion` 和发布版本 `version`。项目实际命令、目录、业务文档位置归项目配置，不放进 catalog。后续可按真实需求增加 profile 说明、显式依赖关系或按需模板清单，但必须同时实现安装解析、校验与测试；只添加未被工具读取的字段没有作用。当前依赖关系在安装器中实现，模板统一安装，尚未由这些扩展字段控制。
 
-`common` 配置集包含 common/workflow/tooling 三份规范，所以当前 **8 个配置集对应 10 份规范**，并不是数量不一致。tooling 规定新工程默认选型及存量边界，不会让安装器自动更换业务工程工具链。
+`common` 配置集包含 common/workflow/tooling 三份规范，frontend 包含 frontend/frontend-design 两份规范，所以当前 **8 个配置集对应 11 份规范**。tooling 规定新工程默认选型及存量边界，不会让安装器自动更换业务工程工具链。
 
 ### bin、src、scripts
 
@@ -123,7 +130,7 @@ agent-kit/
 - `tests/` 验证确定性的程序行为，例如冲突时有没有拒绝覆盖、检查命令超时有没有失败。
 - `evals/` 评估 Agent 的工作行为，例如它有没有识别大整数精度风险、有没有谎称浏览器验证通过。
 
-`npm run check` 会运行工具测试，并检查评估场景的定义格式；**不会调用模型执行这 18 个场景**。场景涵盖流程边界、前端质量及数据契约；工具链场景补充新工程默认值、存量工程不迁移和 Angular 构建边界。
+`npm run check` 会运行工具测试，并检查评估场景的定义格式；**不会调用模型执行这 23 个场景**。场景涵盖流程边界、前端质量、工具链及数据契约；设计场景补充新设计确认、小修改连续完成、外部建议冲突、候选基线与只读审查。
 
 ### 根目录 AGENTS 与安装生成的 AGENTS 区块
 
@@ -149,6 +156,8 @@ your-project/
     │   └── src/kit.mjs               本地检查/诊断/验证实现
     ├── templates/
     │   ├── project.md               固定版本的项目事实模板
+    │   ├── design-baseline.md       固定版本的设计基线模板，填写后保存在项目自有文档
+    │   ├── ui-design.md             固定版本的页面设计与验收记录模板
     │   └── task.md                  固定版本的任务模板
     ├── backups/<批次>/               apply 有变更时保存原文件和恢复清单
     └── reports/<运行记录>.json       显式执行 verify 后的检查报告
@@ -174,6 +183,7 @@ your-project/
 | 调整任务流程和需要人工确认的边界 | standards/workflow.md |
 | 确定新工程工具链及存量兼容原则 | standards/tooling.md |
 | 统一跨框架的 UI 与交互原则 | standards/frontend.md |
+| 确定设计基线、原型与确认流程 | standards/frontend-design.md、kit-ui-design；验收用 kit-ui-review |
 | 调整某个框架的编码方式 | standards/angular.md、vue.md、react.md |
 | 改进某类任务的操作方法 | 对应 Skill 的 SKILL.md |
 | 新增或调整配置集的规则/Skill 组合 | catalog.json |

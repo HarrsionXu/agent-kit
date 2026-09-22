@@ -29,6 +29,8 @@
 
 `documents` 为必读项目事实/设计约束/决策文档路径。配置不写 token、服务器密码、个人数据。规则不会自动读环境变量或历史会话。
 
+0.1.6 起 frontend 配置集包含 frontend-design 规则和 kit-ui-design/kit-ui-review 两个阶段的 Skill。将项目设计基线入口登记在 project.md 或适用 AGENTS；需要始终读取时加入 documents。模板随 Kit 分发到 `.agent-kit/templates/`，填写后的基线和页面记录应放项目自有文档，已有权威文档直接引用；安装器不会自动选定样板或确认设计。升级保留项目事实和第三方 Skills，若手写入口或旧副本仍要求所有 UI 任务使用 ui-ux-pro-max，需在授权范围统一入口或记录明确的项目例外，不直接改受管理副本。
+
 ## 命令
 
 ```sh

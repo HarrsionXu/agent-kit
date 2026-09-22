@@ -8,8 +8,8 @@
 
 ## 已具备
 
-- 8 个配置集、10 份规则：公共工程、工作流程、工具链、前端、Angular、Vue、React、后端、微前端、运营后台。
-- 7 个按需 Skills：任务闭环、证据审查、UI、接口契约、数据变更、CRUD、导入诊断。
+- 8 个配置集、11 份规则：公共工程、工作流程、工具链、前端工程与 UI/UX 设计、Angular、Vue、React、后端、微前端、运营后台。
+- 8 个按需 Skills：任务闭环、证据审查、UI 设计、UI 验收、接口契约、数据变更、CRUD、导入诊断。
 - 无第三方运行时依赖的 CLI：预览接入、受保护安装、版本/摘要锁定、完整性检查、就绪诊断、本地验证报告。
 - 安装与 runner 自动回归测试，以及独立的 Agent 行为评估场景。
 
@@ -83,6 +83,8 @@ common 自动加入；framework/admin/microfrontend 自动引入 frontend。所�
 - [通用工程规范](standards/common.md)：判断、边界、数据、证据。
 - [工具链与新工程选型](standards/tooling.md)：新工程默认 pnpm、按应用类型选择构建链；版本、锁文件、CI 与存量工程兼容边界。
 - [前端规范](standards/frontend.md)：Tailwind、页面设计、状态分层、TypeScript、禁止硬编码、注释和可维护性；具体视觉 token 放业务仓库。
+- [UI / UX 设计规范](standards/frontend-design.md)：项目基线、页面模式、按范围裁剪的设计流程、浏览器原型与真实验收。
+- [设计流程 Skill](.agents/skills/kit-ui-design/SKILL.md) 与 [UI 验收 Skill](.agents/skills/kit-ui-review/SKILL.md)：分别组织设计和验证；[设计基线模板](templates/design-baseline.md)、[页面设计记录](templates/ui-design.md) 用于业务工程，不代表已有设计获确认。
 - [工作流程](standards/workflow.md)：按风险采用轻重不同的闭环。
 - [任务模板](templates/task.md)：验收案例和交付证据。
 - [配置与安全说明](docs/configuration.md)：命令、monorepo、升级和恢复。
@@ -95,13 +97,15 @@ common 自动加入；framework/admin/microfrontend 自动引入 frontend。所�
 
 - 在相邻目录放一个规范仓库，不会使所有项目自动继承。Codex 有项目内 AGENTS 和 `.agents/skills` 的发现范围，因此需要项目接入。[AGENTS 官方说明](https://learn.chatgpt.com/docs/agent-configuration/agents-md)、[Skills 官方说明](https://learn.chatgpt.com/docs/build-skills)。
 - Skill 被发现不等于每次完整读取或绝对执行。需要清晰触发条件、任务证据、自动检查和行为评估共同约束；已按 Skill Creator 的简洁、明确触发原则编写。
-- 未整体复制 ui-ux-pro-max，不依赖某个设计 Skill 保证 UI 一致。项目组件、token、被接受的页面与真实视觉验收才是基线。
+- 未整体复制 ui-ux-pro-max；保留已安装副本作为具体问题的按需参考，取消每个 UI 任务必用的要求。项目组件、token、被接受的页面与真实视觉/交互验收构成基线，不采用与工作台任务无关的营销结构。
 - 本地命令不是沙箱，执行前仍要审核。工具不能自动保证 lint/test 脚本没有网络或数据库副作用。
 - 首次创建没有修改参考项目。之后已按用户明确授权完成两个前端工程的本地接入，结果见 [交付与验证记录](docs/verification.md)；未自动推广到其他工程，未改全局配置、推送或发布。真实应用构建、浏览器验收、微前端 PoC 和独立模型行为评估仍在相应项目中进行。
 
 ## 版本维护
 
 修改中央规则/Skills/工具后，同步提升 package.json 和 catalog.json 版本、运行 `npm run check`，审核变更，再由业务项目显式升级。不自动追踪 main，不覆盖项目手写文件。同版本内容改变会被已接入项目拒绝。
+
+0.1.6 在 frontend 配置集中增加 UI/UX 设计规范与 kit-ui-design，明确项目基线 → 设计/原型 → 实现 → 验收的工作方式。小调整沿用基线连续完成，新页面和关键交互的新设计先交付原型供确认；默认使用浏览器，不引入专业设计工具。ui-ux-pro-max 改为按需参考。模板随 Kit 分发，但填写后的基线属于业务工程；既有固定副本需显式升级，不能仅凭中央更新宣称项目已使用新流程。
 
 0.1.5 增加工具链标准并随 common 配置集分发：新工程默认 pnpm，Vue/React SPA 默认 Vite，Angular 使用官方 CLI 构建链；明确版本固定、锁定安装和验收。存量工程及其新增模块保留原工具，不自动迁移；本 Kit 继续使用 npm。
 
